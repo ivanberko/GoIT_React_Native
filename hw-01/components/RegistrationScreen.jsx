@@ -8,31 +8,15 @@ import {
   Keyboard,
 } from "react-native";
 
-const RegistrationScreen = ({ handleEntry }) => {
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+const RegistrationScreen = ({
+  handleEntry,
+  isShowKeyboard,
+  handleShowKeyboard,
+}) => {
   const [showPassword, setShowPassword] = useState(true);
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [passwword, setPasswword] = useState("");
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        setIsShowKeyboard(true);
-      }
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setIsShowKeyboard(false);
-      }
-    );
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
 
   const clearForm = () => {
     setLogin("");
@@ -62,14 +46,14 @@ const RegistrationScreen = ({ handleEntry }) => {
         placeholder="Логин"
         value={login}
         onChangeText={(text) => setLogin(text)}
-        onFocus={() => setIsShowKeyboard(true)}
+        onFocus={handleShowKeyboard}
       />
       <TextInput
         style={styles.input}
         placeholder="Адрес электронной почты"
         value={email}
         onChangeText={(text) => setEmail(text)}
-        onFocus={() => setIsShowKeyboard(true)}
+        onFocus={handleShowKeyboard}
       />
       <View style={{ ...styles.input, ...styles.inputPass }}>
         <TextInput
@@ -82,7 +66,7 @@ const RegistrationScreen = ({ handleEntry }) => {
           value={passwword}
           secureTextEntry={showPassword}
           onChangeText={(text) => setPasswword(text)}
-          onFocus={() => setIsShowKeyboard(true)}
+          onFocus={handleShowKeyboard}
         />
         <Text
           style={styles.text}

@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   ImageBackground,
@@ -16,8 +16,29 @@ const bgImage =
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(true);
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
 
   const handleClick = () => setIsLogin((prev) => !prev);
+
+  const showKeyboard = () => setIsShowKeyboard(true);
+
+  const handleShowKeyboard = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+  };
+
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setIsShowKeyboard(false);
+      }
+    );
+    return () => {
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   return (
     <ImageBackground
       source={{
@@ -25,15 +46,23 @@ export default function App() {
       }}
       style={{ width: "100%", height: "100%" }}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={handleShowKeyboard}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.container}
         >
           {!isLogin ? (
-            <RegistrationScreen handleEntry={handleClick} />
+            <RegistrationScreen
+              handleEntry={handleClick}
+              isShowKeyboard={isShowKeyboard}
+              handleShowKeyboard={showKeyboard}
+            />
           ) : (
-            <LoginScreen handleEntry={handleClick} />
+            <LoginScreen
+              handleEntry={handleClick}
+              isShowKeyboard={isShowKeyboard}
+              handleShowKeyboard={showKeyboard}
+            />
           )}
           <StatusBar style="auto" />
         </KeyboardAvoidingView>
