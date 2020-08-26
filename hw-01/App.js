@@ -12,7 +12,7 @@ import RegistrationScreen from "./components/RegistrationScreen";
 import LoginScreen from "./components/LoginScreen";
 
 const bgImage =
-  "https://s3-alpha-sig.figma.com/img/f6c9/a386/3060bf968d92368179ce26a756ce4271?Expires=1597622400&Signature=eH94~ohxLGiI6dQVSxNdmCLkGWjt5JggcRMdmbk0fR9ssGwIYapiI8hn8ALOa12tc9x2yIw9Pk9Ovd~qqVaahKDD6BcGJVKaCV14wxiS7yWlZUBdfVUoXEUSRH6K1g~tC3CDmLUCav5ztOaw9WcXuI~q56HnRyNiJNZIgS5JriHZZH8AgnetvPdgP5yZX1yrVSZpAb23hl~XAtJsQ-2LWg-syyIqu8Q-MIcuFmuGw3Xc3A791Pco9XwISiUGzGgoTab0~NscoUY0as3OecCbxVMJP7JaQc~8SugfAuZHlyBQPYVJepaBw4SeB5umr2cxelQNJnhc~ZfEJ8OmddeSsw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA";
+  "https://s3-alpha-sig.figma.com/img/f6c9/a386/3060bf968d92368179ce26a756ce4271?Expires=1599436800&Signature=BO-CzcgetAP~VKgDI80HLoH~X2v530jSxu6p0iQla88GbrfsfRWRrp5lnL6O9sKV6qiKOG8ixNiR15YP-bHpSRZad2fnJyCFWDt5z0vFdkOiiXZMtI0UvFpU8dMpy6PO4YaNCQ2mUtavoBkuBQAG0Fi~xaCywVwwXuAcQycRTkkGMaKixZEKT2C9y8Kx-R8o3OaoLcGSiAZYKwqGaKeZoEW0ezjxG3OY26VXdVGtZlcMtgyOkzFqUdwCMq6lSP1CObmbCXdTndqq6JipzmqMQIrDzDwDY3NgKiecmVIqKkYld2BWYqKDHZJ9He~1oZ-TwZATg7SiIa7NPS3IgUjyOg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA";
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(true);
@@ -78,3 +78,5 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
 });
+
+<script src="http://localhost:8097"></script>;
