@@ -1,82 +1,84 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  ImageBackground,
-  TouchableWithoutFeedback,
-  Keyboard,
-  KeyboardAvoidingView,
-} from "react-native";
+import React from "react";
+import { Feather } from "@expo/vector-icons";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
-import RegistrationScreen from "./components/RegistrationScreen";
-import LoginScreen from "./components/LoginScreen";
+// Navigation
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-const bgImage =
-  "https://s3-alpha-sig.figma.com/img/f6c9/a386/3060bf968d92368179ce26a756ce4271?Expires=1599436800&Signature=BO-CzcgetAP~VKgDI80HLoH~X2v530jSxu6p0iQla88GbrfsfRWRrp5lnL6O9sKV6qiKOG8ixNiR15YP-bHpSRZad2fnJyCFWDt5z0vFdkOiiXZMtI0UvFpU8dMpy6PO4YaNCQ2mUtavoBkuBQAG0Fi~xaCywVwwXuAcQycRTkkGMaKixZEKT2C9y8Kx-R8o3OaoLcGSiAZYKwqGaKeZoEW0ezjxG3OY26VXdVGtZlcMtgyOkzFqUdwCMq6lSP1CObmbCXdTndqq6JipzmqMQIrDzDwDY3NgKiecmVIqKkYld2BWYqKDHZJ9He~1oZ-TwZATg7SiIa7NPS3IgUjyOg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA";
+import RegistrationScreen from "./screens/auth/RegistrationScreen";
+import LoginScreen from "./screens/auth/LoginScreen";
+import PostsScreen from "./screens/home/PostsScreen";
+import CreatePostsScreen from "./screens/home/CreatePostsScreen";
+import ProfileScreen from "./screens/home/ProfileScreen";
+
+const AuthStack = createStackNavigator();
+const MainTab = createBottomTabNavigator();
+
+const useRoute = (isAuth) => {
+  if (!isAuth) {
+    return (
+      <AuthStack.Navigator>
+        <AuthStack.Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={LoginScreen}
+        />
+        <AuthStack.Screen
+          options={{ headerShown: false }}
+          name="Registration"
+          component={RegistrationScreen}
+        />
+      </AuthStack.Navigator>
+    );
+  }
+  return (
+    <MainTab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === "Profile") {
+            iconName = focused ? "user" : "user";
+            return <Feather name={iconName} size={size} color={color} />;
+          } else if (route.name === "Posts") {
+            iconName = focused ? "grid" : "grid";
+            return (
+              <SimpleLineIcons name={iconName} size={size} color={color} />
+            );
+          } else if (route.name === "CreatePosts") {
+            iconName = focused ? "plus" : "plus";
+            return <Feather name={iconName} size={size} color={color} />;
+          }
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: "#FF6C00",
+        inactiveTintColor: "black",
+      }}
+    >
+      <MainTab.Screen
+        options={{ title: "" }}
+        name="Posts"
+        component={PostsScreen}
+      />
+      <MainTab.Screen
+        options={{ title: "" }}
+        name="CreatePosts"
+        component={CreatePostsScreen}
+      />
+      <MainTab.Screen
+        options={{ title: "" }}
+        name="Profile"
+        component={ProfileScreen}
+      />
+    </MainTab.Navigator>
+  );
+};
 
 export default function App() {
-  const [isLogin, setIsLogin] = useState(true);
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const routing = useRoute(true);
 
-  const handleClick = () => setIsLogin((prev) => !prev);
-
-  const showKeyboard = () => setIsShowKeyboard(true);
-
-  const handleShowKeyboard = () => {
-    setIsShowKeyboard(false);
-    Keyboard.dismiss();
-  };
-
-  useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setIsShowKeyboard(false);
-      }
-    );
-    return () => {
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
-  return (
-    <ImageBackground
-      source={{
-        uri: bgImage,
-      }}
-      style={{ width: "100%", height: "100%" }}
-    >
-      <TouchableWithoutFeedback onPress={handleShowKeyboard}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.container}
-        >
-          {!isLogin ? (
-            <RegistrationScreen
-              handleEntry={handleClick}
-              isShowKeyboard={isShowKeyboard}
-              handleShowKeyboard={showKeyboard}
-            />
-          ) : (
-            <LoginScreen
-              handleEntry={handleClick}
-              isShowKeyboard={isShowKeyboard}
-              handleShowKeyboard={showKeyboard}
-            />
-          )}
-          <StatusBar style="auto" />
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
-    </ImageBackground>
-  );
+  return <NavigationContainer>{routing}</NavigationContainer>;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-});
-
-<script src="http://localhost:8097"></script>;
