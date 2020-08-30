@@ -2,10 +2,11 @@ import React from "react";
 
 import { View, Text, StyleSheet } from "react-native";
 
-const PostsScreen = () => {
+const PostsScreen = ({ route: { name } }) => {
+
   return (
     <View style={styles.container}>
-      <Text>PostsScreen</Text>
+      <Text>{name}</Text>
     </View>
   );
 };
